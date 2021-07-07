@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "components/Application.scss";
 import "components/DayList.js";
 import DayList from "components/DayList.js";
+import Form from "components/Form.js";
 
 const days = [
   {
