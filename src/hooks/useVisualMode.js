@@ -6,17 +6,20 @@ export default function useVisualMode(initial) {
   const [history, setHistory] = useState([initial]);
 
   function transition(newMode, replace = false) {
-    setMode(newMode);
     if (replace) {
-      setHistory(history.slice(0, history.length -1));
+      setHistory(prev => [...prev, newMode]);
+      setMode(newMode); 
     }
-    setHistory(prev => [...prev, newMode]); 
+    //ASK A MENTOR ABOUT THIS NEXT TIME YOU REVISIT, THIS WORKS TENATIVELY DUE TO... BEES?
+    const updatedHistory = [...history]
+    setHistory(prev => [...updatedHistory, newMode]);
+    setMode(newMode);
   }
   
   function back() {
     if (history.length > 1) {
       setMode(history[history.length - 2]);
-      setHistory(history.slice(0, history.length - 1));
+      setHistory(prev => [prev.slice(0, prev.length - 1)]);
     };
   }
   

@@ -9,6 +9,7 @@ import Empty from "components/Appointment/Empty";
 import Form from "components/Appointment/Form";
 import Status from "components/Appointment/Status";
 import Confirm from "components/Appointment/Confirm";
+import Error from "components/Appointment/Error";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
@@ -17,6 +18,10 @@ const SAVING = "SAVING";
 const DELETING = "DELETING";
 const CONFIRM = "CONFIRM";
 const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
+
+//TALK TO A MENTOR ABOUT WEIRD DELETING BEHAVIOR AROUND CONFIRM ELEMENT (POSSIBLY FIXED WITH CALLBACK)
 
 export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
@@ -29,13 +34,17 @@ export default function Appointment(props) {
 
     transition(SAVING);
 
-    props.bookInterview(props.id, interview).then(() => transition(SHOW));
+    props.bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch(error => transition(ERROR_SAVE, true));
   }
 
   function deleteAppointment() {
     transition(DELETING, true)
 
-    Promise.resolve(props.cancelInterview(props.id).then(() => transition(EMPTY)));
+    Promise.resolve(props.cancelInterview(props.id)
+      .then(() => transition(EMPTY))
+      .catch(error => transition(ERROR_DELETE, true)));
   }
 
   //Temporary value
@@ -70,7 +79,7 @@ export default function Appointment(props) {
         <Confirm 
         message="Are you sure you want to delete?"
         onConfirm={deleteAppointment}
-        onCancel={back}
+        onCancel={() => back()}
         />
       )}
       {mode === DELETING && (
@@ -85,6 +94,18 @@ export default function Appointment(props) {
           interviewers={props.interviewers}
           onCancel={() => back()}
           onSave={save}
+        />
+      )}
+      {mode === ERROR_SAVE && (
+        <Error 
+          message="Couldn't Save please try again"
+          onClose={() => back()}
+        />
+      )}
+      {mode === ERROR_DELETE && (
+        <Error 
+          message="Couldn't Delete please try again"
+          onClose={() => back()}
         />
       )}
     </article>
