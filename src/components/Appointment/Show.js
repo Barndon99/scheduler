@@ -1,4 +1,5 @@
 import React from "react";
+import useVisualMode from "hooks/useVisualMode";
 
 export default function Show(props) {
   console.log("PROPS ******", props);
@@ -23,7 +24,7 @@ export default function Show(props) {
             className="appointment__actions-button"
             src="images/trash.png"
             alt="Delete"
-            onClick={() => props.onDelete(props.interviewer.id)}
+            onClick={() => props.onDelete(props.id)}
           />
         </section>
       </section>

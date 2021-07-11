@@ -144,8 +144,8 @@ storiesOf("Appointment", module)
   .add("Appointment with Time", () => <Appointment time="12pm" />)
   .add("Header", () => <Header time="12pm" />)
   .add("Empty", () => <Empty onAdd={action("onAdd")} />)
-  .add("Edit", () => <Form name="name" interviewers={interviewers} interviewer="interviewer" onSave={action("Save")} onCancel={action("Cancel")}/>)
-  .add("Create", () => <Form interviewers={interviewers} onSave={action("Save")} onCancel={action("Cancel")} />)
+  .add("Edit", () => <Form name="name" interviewers={interviewers} interviewer="interviewer" onSave={save} onCancel={action("Cancel")}/>)
+  .add("Create", () => <Form interviewers={interviewers} onSave={save} onCancel={action("Cancel")} />)
   .add("Appointment Empty", () => (
     <Fragment>
       <Appointment id={1} time="12pm" />

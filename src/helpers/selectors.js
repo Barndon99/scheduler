@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
 
-export default function getAppointmentsForDay(state, day) {
-  const filteredDay= state.days.find(item => item.name === day);
+export function getAppointmentsForDay(state, day) {
+  const filteredDay = state.days.find(item => item.name === day);
 
   if(!filteredDay || state.days.length === 0) return [];
 
@@ -13,7 +13,30 @@ export default function getAppointmentsForDay(state, day) {
   return mappedAppointments;
 }
 
+export function getInterview(state, interview) {
+  if (!interview) {
+    return null;
+  }
+  
+  const interviewerId = interview.interviewer;
+  const arrayInterviewers = Object.keys(state.interviewers).map(key => state.interviewers[key]);
 
+  const interviewer = arrayInterviewers.find(interviewer => interviewer.id === interviewerId);
+
+  return {...interview, interviewer: interviewer}
+}
+
+export function getInterviewersForDay(state, day) {
+  const filteredDay = state.days.find(item => item.name === day);
+
+  if(!filteredDay || state.days.length === 0) return [];
+
+  const mappedInterviewers = filteredDay.interviewers.map(ele => 
+    state.interviewers[ele]
+  );
+
+  return mappedInterviewers;
+}
 //We need to start by finding the object in our state.days array who's name matches the provided day. 
 //With this information we can now access that specific days appointment array.
 
