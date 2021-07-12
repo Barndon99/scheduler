@@ -30,14 +30,27 @@ export default function useApplicationData(intitial) {
       ...state.appointments[id],
       interview: { ...interview }
     };
-
+    
     const appointments = {
       ...state.appointments,
       [id]: appointment
     };
+    //Decrease spots count by one *check with mentor*
+    function decSpots() {
+      console.log("Confirm Spots exist", state.days);
+      const openDays = [...state.days];
+      openDays.map((day) => {
+        for (const appointment of day.appointments) {
+          if (appointment === id) { day.spots = day.spots + 1};
+        }
+      });
+      return openDays;
+    }
 
     return axios.put(`/api/appointments/${id}`, appointment)
-      .then(res => setState({
+      .then(() => 
+        decSpots(),
+        setState({
         ...state,
         appointments
       }));
@@ -53,12 +66,24 @@ export default function useApplicationData(intitial) {
       ...state.appointments,
       [id]: appointment
     }
+    //Incrase spots count by one *Check with mentor*
+    function incSpots() {
+      const openDays = [...state.days];
+      openDays.map((day) => {
+        for (const appointment of day.appointments) {
+          if (appointment === id) {day.spots = day.spots + 1};
+        }
+      })
+      return openDays;
+    }
 
     return axios.delete(`/api/appointments/${id}`)
-      .then(res => setState({
+      .then(() => 
+      incSpots(),
+      setState({
         ...state,
         appointments
-      }))
+      }));
   }
 
   return { state, setDay, bookInterview, cancelInterview};
