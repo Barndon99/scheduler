@@ -2,8 +2,7 @@ import React from "react";
 import useVisualMode from "hooks/useVisualMode";
 
 export default function Show(props) {
-  console.log("PROPS ******", props);
-  return(
+  return (
     <main className="appointment__card appointment__card--show" key={props.interviewer.id}>
       <section className="appointment__card-left">
         <h2 className="text--regular">{props.student}</h2>

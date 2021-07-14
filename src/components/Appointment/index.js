@@ -37,9 +37,8 @@ export default function Appointment(props) {
     props.bookInterview(props.id, interview)
       .then(() => transition(SHOW))
       .catch(error => {
-        transition(ERROR_SAVE, true); 
-        console.log(error);
-      });
+        transition(ERROR_SAVE, true);
+    });
   }
 
   function deleteAppointment() {
@@ -48,9 +47,8 @@ export default function Appointment(props) {
     Promise.resolve(props.cancelInterview(props.id))
       .then(() => transition(EMPTY))
       .catch(error => {
-        transition(ERROR_DELETE, true); 
-        console.log(error);
-      })
+        transition(ERROR_DELETE, true);
+    });
   }
 
   //Temporary value
@@ -77,20 +75,20 @@ export default function Appointment(props) {
         />
       )}
       {mode === SAVING && (
-        <Status 
-        message="Saving..."
+        <Status
+          message="Saving..."
         />
       )}
       {mode === CONFIRM && (
-        <Confirm 
-        message="Are you sure you want to delete?"
-        onConfirm={deleteAppointment}
-        onCancel={() => back()}
+        <Confirm
+          message="Are you sure you want to delete?"
+          onConfirm={deleteAppointment}
+          onCancel={() => back()}
         />
       )}
       {mode === DELETING && (
         <Status
-        message="Deleting..."
+          message="Deleting..."
         />
       )}
       {mode === EDIT && (
@@ -103,13 +101,13 @@ export default function Appointment(props) {
         />
       )}
       {mode === ERROR_SAVE && (
-        <Error 
+        <Error
           message="Couldn't Save please try again"
           onClose={() => back()}
         />
       )}
       {mode === ERROR_DELETE && (
-        <Error 
+        <Error
           message="Couldn't Delete please try again"
           onClose={() => back()}
         />

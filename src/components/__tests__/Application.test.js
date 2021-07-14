@@ -95,7 +95,7 @@ describe("Application", () => {
     const interview = getAllByTestId(container, "appointment").find(
       interview => queryByText(interview, "Archie Cohen")
     );
-    console.log("INTERVIEW: ", prettyDOM(interview))
+
     fireEvent.click(queryByAltText(interview, "Edit"));
 
     fireEvent.change(getByPlaceholderText(interview, /enter student name/i), {
@@ -151,35 +151,21 @@ describe("Application", () => {
     const { container, debug } = render(<Application />);
 
     await waitForElement(() => getByText(container, "Archie Cohen"));
-  
+
     const interview = getAllByTestId(container, "appointment").find(
       interview => queryByText(interview, "Archie Cohen")
     );
 
     fireEvent.click(getByAltText(interview, "Delete"));
-    
-    // 4. Check that the confirmation message is shown.
+
     expect(getByText(interview, "Are you sure you want to delete?")).toBeInTheDocument();
-    
-    // 5. Click the "Confirm" button on the confirmation page.
-    // fireEvent.click(getByText(appointment, "Confirm"));
+
     fireEvent.click(getByText(interview, "Confirm"));
 
-    // 6. Check that the element with the text "Deleting" is displayed.
     expect(getByText(interview, "Deleting...")).toBeInTheDocument();
 
-    // 7. Wait until the element with the "Add" button is displayed.
     await waitForElement(() => getByText(interview, "Couldn't Delete please try again"));
 
     expect(getByText(interview, "Couldn't Delete please try again")).toBeInTheDocument();
-
   });
-
-
 });
-
-// We want to start by finding an existing interview.
-// With the existing interview we want to find the edit button.
-// We change the name and save the interview.
-// We don't want the spots to change for "Monday", since this is an edit.
-// Read the errors because sometimes they say that await cannot be outside of an async function.

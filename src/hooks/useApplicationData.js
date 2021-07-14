@@ -20,10 +20,10 @@ export default function useApplicationData(intitial) {
       const days = all[0].data;
       const appointments = all[1].data;
       const interviewers = all[2].data;
-      console.log("APP.JS INTERVIEWERS = ", interviewers);
-      setState(prev => ({...prev, days, appointments, interviewers}))
+      setState(prev => ({ ...prev, days, appointments, interviewers }))
     })
   }, []);
+
   //Get spots for the day
   function getSpotsForDay(dayObj, appointments) {
     let spots = 0;
@@ -34,17 +34,18 @@ export default function useApplicationData(intitial) {
         spots++;
       }
     }
-    console.log("SPOTS IN GET SPOTS: ", spots);
+
     return spots;
   };
+
   //Change spots function 
   function updateSpots(days, dayName, appointments) {
     const dayObj = days.find(item => item.name === dayName);
-    
+
     const spots = getSpotsForDay(dayObj, appointments);
-    const newDay = {...dayObj, spots};
-    console.log("SPOTS IN UPDATE SPOTS: ", spots)
-    
+
+    const newDay = { ...dayObj, spots };
+
     const newDays = days.map(item => (item.name === dayName) ? newDay : item);
 
     return newDays;
@@ -55,20 +56,19 @@ export default function useApplicationData(intitial) {
       ...state.appointments[id],
       interview: { ...interview }
     };
-    
+
     const appointments = {
       ...state.appointments,
       [id]: appointment
     };
-    //Decrease spots count by one *check with mentor*
-
+    //Save to the DB
     return axios.put(`/api/appointments/${id}`, appointment)
-      .then(() => { 
+      .then(() => {
         setState({
-        ...state,
-        appointments, days: updateSpots(state.days, state.day, appointments)
+          ...state,
+          appointments, days: updateSpots(state.days, state.day, appointments)
+        });
       });
-    });
   };
 
   function cancelInterview(id) {
@@ -81,16 +81,16 @@ export default function useApplicationData(intitial) {
       ...state.appointments,
       [id]: appointment
     }
-
+    //Deletes from DB
     return axios.delete(`/api/appointments/${id}`)
-      .then(() => { 
+      .then(() => {
 
         setState({
-        ...state,
-        appointments, days: updateSpots(state.days, state.day, appointments)
+          ...state,
+          appointments, days: updateSpots(state.days, state.day, appointments)
+        });
       });
-    });
   };
 
-  return { state, setDay, bookInterview, cancelInterview};
+  return { state, setDay, bookInterview, cancelInterview };
 }
