@@ -36,22 +36,28 @@ export default function Appointment(props) {
 
     props.bookInterview(props.id, interview)
       .then(() => transition(SHOW))
-      .catch(error => transition(ERROR_SAVE, true));
+      .catch(error => {
+        transition(ERROR_SAVE, true); 
+        console.log(error);
+      });
   }
 
   function deleteAppointment() {
     transition(DELETING, true)
 
-    Promise.resolve(props.cancelInterview(props.id)
+    Promise.resolve(props.cancelInterview(props.id))
       .then(() => transition(EMPTY))
-      .catch(error => transition(ERROR_DELETE, true)));
+      .catch(error => {
+        transition(ERROR_DELETE, true); 
+        console.log(error);
+      })
   }
 
   //Temporary value
   const interviewers = [];
 
   return (
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment">
       <Header time="12PM" />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === CREATE &&

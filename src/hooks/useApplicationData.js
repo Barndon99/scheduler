@@ -24,6 +24,31 @@ export default function useApplicationData(intitial) {
       setState(prev => ({...prev, days, appointments, interviewers}))
     })
   }, []);
+  //Get spots for the day
+  function getSpotsForDay(dayObj, appointments) {
+    let spots = 0;
+
+    for (const id of dayObj.appointments) {
+      const appointment = appointments[id];
+      if (!appointment.interview) {
+        spots++;
+      }
+    }
+    console.log("SPOTS IN GET SPOTS: ", spots);
+    return spots;
+  };
+  //Change spots function 
+  function updateSpots(days, dayName, appointments) {
+    const dayObj = days.find(item => item.name === dayName);
+    
+    const spots = getSpotsForDay(dayObj, appointments);
+    const newDay = {...dayObj, spots};
+    console.log("SPOTS IN UPDATE SPOTS: ", spots)
+    
+    const newDays = days.map(item => (item.name === dayName) ? newDay : item);
+
+    return newDays;
+  };
 
   function bookInterview(id, interview) {
     const appointment = {
@@ -36,25 +61,15 @@ export default function useApplicationData(intitial) {
       [id]: appointment
     };
     //Decrease spots count by one *check with mentor*
-    function decSpots() {
-      console.log("Confirm Spots exist", state.days);
-      const openDays = [...state.days];
-      openDays.map((day) => {
-        for (const appointment of day.appointments) {
-          if (appointment === id) { day.spots = day.spots + 1};
-        }
-      });
-      return openDays;
-    }
 
     return axios.put(`/api/appointments/${id}`, appointment)
-      .then(() => 
-        decSpots(),
+      .then(() => { 
         setState({
         ...state,
-        appointments
-      }));
-  }
+        appointments, days: updateSpots(state.days, state.day, appointments)
+      });
+    });
+  };
 
   function cancelInterview(id) {
     const appointment = {
@@ -66,25 +81,16 @@ export default function useApplicationData(intitial) {
       ...state.appointments,
       [id]: appointment
     }
-    //Incrase spots count by one *Check with mentor*
-    function incSpots() {
-      const openDays = [...state.days];
-      openDays.map((day) => {
-        for (const appointment of day.appointments) {
-          if (appointment === id) {day.spots = day.spots + 1};
-        }
-      })
-      return openDays;
-    }
 
     return axios.delete(`/api/appointments/${id}`)
-      .then(() => 
-      incSpots(),
-      setState({
+      .then(() => { 
+
+        setState({
         ...state,
-        appointments
-      }));
-  }
+        appointments, days: updateSpots(state.days, state.day, appointments)
+      });
+    });
+  };
 
   return { state, setDay, bookInterview, cancelInterview};
 }
