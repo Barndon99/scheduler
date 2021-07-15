@@ -1,5 +1,4 @@
 import React from "react";
-import useVisualMode from "hooks/useVisualMode";
 
 export default function Show(props) {
   return (

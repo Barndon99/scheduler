@@ -5,6 +5,7 @@ import axios from "axios";
 import Application from "components/Application";
 
 afterEach(cleanup);
+
 describe("Application", () => {
   const interviewers = [
     {

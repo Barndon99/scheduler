@@ -21,8 +21,6 @@ const EDIT = "EDIT";
 const ERROR_SAVE = "ERROR_SAVE";
 const ERROR_DELETE = "ERROR_DELETE";
 
-//TALK TO A MENTOR ABOUT WEIRD DELETING BEHAVIOR AROUND CONFIRM ELEMENT (POSSIBLY FIXED WITH CALLBACK)
-
 export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
   //Add a new interview
@@ -38,7 +36,7 @@ export default function Appointment(props) {
       .then(() => transition(SHOW))
       .catch(error => {
         transition(ERROR_SAVE, true);
-    });
+      });
   }
 
   function deleteAppointment() {
@@ -48,11 +46,8 @@ export default function Appointment(props) {
       .then(() => transition(EMPTY))
       .catch(error => {
         transition(ERROR_DELETE, true);
-    });
+      });
   }
-
-  //Temporary value
-  const interviewers = [];
 
   return (
     <article className="appointment" data-testid="appointment">
