@@ -2,8 +2,6 @@ import React from 'react'
 import Button from 'components/Button'
 import InterviewerList from 'components/InterviewerList'
 import { useState } from "react";
-import useVisualMode from "hooks/useVisualMode";
-
 
 export default function Form(props) {
   const [name, setName] = useState(props.name || "");
