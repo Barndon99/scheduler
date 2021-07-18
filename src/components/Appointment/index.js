@@ -42,7 +42,7 @@ export default function Appointment(props) {
   function deleteAppointment() {
     transition(DELETING, true)
 
-    Promise.resolve(props.cancelInterview(props.id))
+  props.cancelInterview(props.id)
       .then(() => transition(EMPTY))
       .catch(error => {
         transition(ERROR_DELETE, true);
@@ -51,7 +51,7 @@ export default function Appointment(props) {
 
   return (
     <article className="appointment" data-testid="appointment">
-      <Header time="12PM" />
+      <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === CREATE &&
         <Form
@@ -89,22 +89,22 @@ export default function Appointment(props) {
       {mode === EDIT && (
         <Form
           name={props.interview.student}
-          interview={props.interview.interviewer.id}
+          interviewer={props.interview.interviewer.id}
           interviewers={props.interviewers}
-          onCancel={() => back()}
+          onCancel={back}
           onSave={save}
         />
       )}
       {mode === ERROR_SAVE && (
         <Error
           message="Couldn't Save please try again"
-          onClose={() => back()}
+          onClose={back}
         />
       )}
       {mode === ERROR_DELETE && (
         <Error
           message="Couldn't Delete please try again"
-          onClose={() => back()}
+          onClose={back}
         />
       )}
     </article>
