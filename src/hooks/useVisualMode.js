@@ -21,18 +21,7 @@ export default function useVisualMode(initial) {
       setHistory(prev => [...prev.slice(0, prev.length - 1)]);
     };
     console.log("THIS IS THE END: ", history)
-  }
-
-  //const back = () => {
-  //  const pastHistory = history.length > 1 ? history.slice(0, -1) : initial;
-  //  setHistory(pastHistory);
-  //  setState(
-  //    Array.isArray(pastHistory)
-  //      ? pastHistory[pastHistory.length - 1]
-  //      : pastHistory
-  //  );
-  //};
-  
+  }  
 
   return { mode, transition, back };
   
