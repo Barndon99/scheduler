@@ -2,11 +2,11 @@ import axios from "axios";
 import { useState } from "react";
 
 export function getAppointmentsForDay(state, day) {
-  const filteredDay = state.days.find(item => item.name === day);
+  const foundDay = state.days.find(item => item.name === day);
 
-  if(!filteredDay || state.days.length === 0) return [];
+  if(!foundDay) return [];
 
-  const mappedAppointments = filteredDay.appointments.map((appointmentId) => 
+  const mappedAppointments = foundDay.appointments.map((appointmentId) => 
     state.appointments[appointmentId]
   );
 
@@ -27,11 +27,11 @@ export function getInterview(state, interview) {
 }
 
 export function getInterviewersForDay(state, day) {
-  const filteredDay = state.days.find(item => item.name === day);
+  const foundDay = state.days.find(item => item.name === day);
 
-  if(!filteredDay || state.days.length === 0) return [];
+  if(!foundDay) return [];
 
-  const mappedInterviewers = filteredDay.interviewers.map(ele => 
+  const mappedInterviewers = foundDay.interviewers.map(ele => 
     state.interviewers[ele]
   );
 
